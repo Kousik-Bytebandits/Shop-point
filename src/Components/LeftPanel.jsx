@@ -1,11 +1,22 @@
-
-import { FaTachometerAlt, FaBox, FaShoppingCart, FaChartBar, FaStar, FaUsers, FaExchangeAlt, FaFileAlt, FaCog } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import "../App.css";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import {
+  FaTachometerAlt,
+  FaBox,
+  FaChevronDown,
+  FaChevronUp,
+  FaShoppingCart,
+  FaChartBar,
+  FaStar,
+  FaUsers,
+  FaExchangeAlt,
+  FaFileAlt,
+  FaCog,
+} from "react-icons/fa";
 
-const LeftPanel = () => {
+function LeftPanel() {
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 760);
+  const [isProductOpen, setIsProductOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -26,14 +37,46 @@ const LeftPanel = () => {
       <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <h2 className="sidebar-title">Shop Point</h2>
         <ul>
-          <li className="sidebar-item">
-         <Link to='/'> <FaTachometerAlt /> <span>Dashboard</span></Link>  
+          <li className="sidebar-item ">
+            <Link to="/">
+              <FaTachometerAlt /> <span>Dashboard</span>
+            </Link>
           </li>
-          <li className="sidebar-item">
-          <Link to='/productgrid'><FaBox /> <span>Products</span></Link>  
+
+          {/* Products Collapsible Section */}
+          <li
+            className="sidebar-item"
+            onClick={() => setIsProductOpen(!isProductOpen)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="products-toggle">
+              <div className="left" >
+                <FaBox />
+                <span>Products</span>
+              </div>
+             <div className="right"> {isProductOpen ? <FaChevronUp /> : <FaChevronDown />} </div>
+            </div>
           </li>
-          <li className="sidebar-item">
-         <Link to='orders'> <FaShoppingCart /> <span>Orders</span></Link>  
+
+          {isProductOpen && (
+            <ul className="nested-links ml-6 mt-1 space-y-1">
+              <li>
+                <Link to="/productgrid" className="text-sm text-gray-700 hover:underline">
+                  Product Grid
+                </Link>
+              </li>
+              <li>
+                <Link to="/producteditor" className=" text-sm text-gray-700 hover:underline">
+                  Product Editor
+                </Link>
+              </li>
+            </ul>
+          )}
+
+          <li className="sidebar-item ">
+            <Link to="/orders">
+              <FaShoppingCart /> <span>Orders</span>
+            </Link>
           </li>
           <li className="sidebar-item">
             <FaChartBar /> <span>Statistics</span>
@@ -57,6 +100,6 @@ const LeftPanel = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LeftPanel;
